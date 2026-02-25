@@ -1,0 +1,32 @@
+# Binaries
+whale
+piechart-demo
+server
+*.exe
+*.out
+
+# Data
+data/
+*.db
+*.db-shm
+*.db-wal
+
+# Temporary files
+*.log
+*.pid
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Coverage
+coverage.txt
+coverage.out
+
+# Environment
+.env
+.env.local

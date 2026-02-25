@@ -1,0 +1,84 @@
+package templates
+
+templ AddBagPage(railType string) {
+	@Layout("Add Bag - "+railType+" Rail", addBagContent(railType))
+}
+
+templ addBagContent(railType string) {
+	<input type="hidden" id="rail-type" value={ railType } />
+	<h1>Add Bag - { railType } Rail</h1>
+	<p>Add a bag to the { railType } rail.</p>
+	
+	<div class="form">
+		<div class="form-field">
+			<label for="bag-number-input">Bag Number (0 for anonymous)</label>
+			<input 
+				type="number" 
+				id="bag-number-input" 
+				min="0" 
+				value="0"
+				required
+				onkeydown="if(event.key === 'Enter') addBag()"
+			>
+		</div>
+		
+		<div id="form-error" class="error hidden"></div>
+		
+		<div class="form-actions">
+			<button class="btn" onclick="addBag()">Add Bag</button>
+			<a href={ "/rail/"+railType } class="btn secondary">Cancel</a>
+		</div>
+	</div>
+	
+	<script>
+		function addBag() {
+			const railType = document.getElementById('rail-type').value;
+			const input = document.getElementById('bag-number-input');
+			let bagNumber = input.value.trim();
+			if (bagNumber === '') {
+				bagNumber = '0';
+			}
+			
+			// Clear previous error
+			document.getElementById('form-error').classList.add('hidden');
+			
+			// Disable button while processing
+			const btn = document.querySelector('.btn');
+			const originalText = btn.textContent;
+			btn.disabled = true;
+			btn.textContent = 'Adding...';
+			
+			fetch(`/api/${railType}/add-bag`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ bag_number: bagNumber })
+			})
+			.then(response => {
+				if (!response.ok) {
+					return response.json().then(err => {
+						throw new Error(err.error || 'Request failed');
+					});
+				}
+				return response.json();
+			})
+			.then(data => {
+				if (data.success) {
+					// Redirect back to rail page
+					window.location.href = `/rail/${railType}`;
+				} else {
+					throw new Error(data.error || 'Unknown error');
+				}
+			})
+			.catch(error => {
+				const errorEl = document.getElementById('form-error');
+				errorEl.textContent = error.message;
+				errorEl.classList.remove('hidden');
+				btn.disabled = false;
+				btn.textContent = originalText;
+			});
+		}
+	</script>
+	
+}

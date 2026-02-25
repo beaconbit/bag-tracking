@@ -1,0 +1,200 @@
+package templates
+
+templ RecordFixPage(railType string) {
+	@Layout("Record Fix - "+railType+" Rail", recordFixContent(railType))
+}
+
+templ recordFixContent(railType string) {
+	<input type="hidden" id="rail-type" value={ railType } />
+	<h1>Record Fix - { railType } Rail</h1>
+	<p>Record completion of work items for bags on the { railType } rail.</p>
+	
+	<div class="form">
+		<div class="form-field" style="display: flex; gap: 1rem; align-items: flex-end;">
+			<div style="flex: 1;">
+				<label for="bag-number-input">Bag Number</label>
+				<input 
+					type="number" 
+					id="bag-number-input" 
+					min="0"
+					onkeydown="if(event.key === 'Enter') addRow()"
+				>
+			</div>
+			<button class="btn" onclick="addRow()" style="height: fit-content;">+ Add</button>
+		</div>
+		
+		<div id="input-error" class="error hidden">
+			Please enter a bag number.
+		</div>
+		
+		<div id="submit-section" class="hidden" style="margin: 1.5rem 0; text-align: center;">
+			<button id="submit-btn" class="btn" onclick="submitFixes()">Submit Fixes</button>
+			<div id="success-message" class="success hidden" style="margin-top: 1rem;">
+				✓ Fixes recorded successfully!
+			</div>
+		</div>
+		
+		<div id="fixes-table-container" class="hidden">
+			<div class="table-scroll-wrapper">
+				<table id="fixes-table" class="fix-table">
+					<thead>
+						<tr>
+							<th>Bag Number</th>
+							<th>Main Trolley</th>
+							<th>Secondary Trolley</th>
+							<th>Clutch</th>
+							<th>Large Rope</th>
+							<th>Small Rope</th>
+							<th>Bag Weight</th>
+							<th>Rope Weight</th>
+							<th>Frame</th>
+							<th>Carabina</th>
+							<th>Fabric</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody id="fixes-table-body">
+						<!-- Rows will be added here -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+		<div class="form-actions" style="margin-top: 2rem;">
+			<a href={ "/rail/"+railType } class="btn secondary">Back to Rail Management</a>
+		</div>
+	</div>
+	
+	<script>
+		let rowCount = 0;
+		
+		function addRow() {
+			const input = document.getElementById('bag-number-input');
+			const bagNumber = input.value.trim();
+			
+			// Clear error
+			document.getElementById('input-error').classList.add('hidden');
+			
+			if (!bagNumber) {
+				document.getElementById('input-error').classList.remove('hidden');
+				input.focus();
+				return;
+			}
+			
+			// Create row ID
+			const rowId = 'row-' + (++rowCount);
+			
+			// Add row to table
+			const tbody = document.getElementById('fixes-table-body');
+			const row = document.createElement('tr');
+			row.id = rowId;
+			row.innerHTML = `
+				<td><strong>${bagNumber}</strong><input type="hidden" name="bag-number" value="${bagNumber}"></td>
+				<td><input type="checkbox" class="fix-checkbox" data-field="main_trolley"></td>
+				<td><input type="checkbox" class="fix-checkbox" data-field="secondary_trolley"></td>
+				<td><input type="checkbox" class="fix-checkbox" data-field="clutch"></td>
+				<td><input type="checkbox" class="fix-checkbox" data-field="large_rope"></td>
+				<td><input type="checkbox" class="fix-checkbox" data-field="small_rope"></td>
+				<td><input type="checkbox" class="fix-checkbox" data-field="bag_weight"></td>
+				<td><input type="checkbox" class="fix-checkbox" data-field="rope_weight"></td>
+				<td><input type="checkbox" class="fix-checkbox" data-field="frame"></td>
+				<td><input type="checkbox" class="fix-checkbox" data-field="carabina"></td>
+				<td><input type="checkbox" class="fix-checkbox" data-field="fabric"></td>
+				<td><button class="btn small danger" onclick="removeRow('${rowId}')">×</button></td>
+			`;
+			tbody.appendChild(row);
+			
+			// Show table and submit button
+			document.getElementById('fixes-table-container').classList.remove('hidden');
+			document.getElementById('submit-section').classList.remove('hidden');
+			
+			// Clear input
+			input.value = '';
+			input.focus();
+		}
+		
+		function removeRow(rowId) {
+			const row = document.getElementById(rowId);
+			if (row) {
+				row.remove();
+			}
+			// Hide table if no rows left
+			const tbody = document.getElementById('fixes-table-body');
+			if (tbody.children.length === 0) {
+				document.getElementById('fixes-table-container').classList.add('hidden');
+				document.getElementById('submit-section').classList.add('hidden');
+			}
+		}
+		
+		function submitFixes() {
+			const railType = document.getElementById('rail-type').value;
+			const rows = document.querySelectorAll('#fixes-table-body tr');
+			const fixes = [];
+			
+			rows.forEach(row => {
+				const bagNumber = row.querySelector('input[name="bag-number"]').value;
+				const checkboxes = row.querySelectorAll('.fix-checkbox');
+				const flags = {};
+				checkboxes.forEach(cb => {
+					flags[cb.dataset.field] = cb.checked;
+				});
+				fixes.push({
+					bag_number: parseInt(bagNumber, 10),
+					flags: flags
+				});
+			});
+			
+			// Disable submit button while processing
+			const submitBtn = document.getElementById('submit-btn');
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'Submitting...';
+			
+			fetch(`/api/${railType}/record-fix`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ fixes: fixes })
+			})
+			.then(response => {
+				if (!response.ok) {
+					return response.json().then(err => {
+						throw new Error(err.error || 'Submission failed');
+					});
+				}
+				return response.json();
+			})
+			.then(data => {
+				if (data.success) {
+					// Show success message
+					const successMsg = document.getElementById('success-message');
+					successMsg.classList.remove('hidden');
+					
+					// Reset table after a short delay
+					setTimeout(() => {
+						// Start fade out
+						successMsg.classList.add('fade-out');
+						setTimeout(() => {
+							document.getElementById('fixes-table-body').innerHTML = '';
+							document.getElementById('fixes-table-container').classList.add('hidden');
+							document.getElementById('submit-section').classList.add('hidden');
+							successMsg.classList.remove('fade-out');
+							successMsg.classList.add('hidden');
+							submitBtn.disabled = false;
+							submitBtn.textContent = 'Submit Fixes';
+						}, 500); // Wait for fade transition
+					}, 1500); // Show for 1.5 seconds before starting fade
+				} else {
+					throw new Error(data.error || 'Unknown error');
+				}
+			})
+			.catch(error => {
+				alert('Error: ' + error.message);
+				submitBtn.disabled = false;
+				submitBtn.textContent = 'Submit Fixes';
+			});
+		}
+	</script>
+	
+
+}

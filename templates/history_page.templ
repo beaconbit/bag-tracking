@@ -1,0 +1,111 @@
+package templates
+
+templ HistoryPage(railType string) {
+	@Layout("Work Order History - "+railType+" Rail", historyContent(railType))
+}
+
+	templ historyContent(railType string) {
+	<input type="hidden" id="rail-type" value={ railType } />
+	<h1>Work Order History - { railType } Rail</h1>
+	<p>View all work orders (request fixes) for the { railType } rail.</p>
+	
+	<div class="form-field">
+		<label for="filter-type">Filter by type:</label>
+		<select id="filter-type" onchange="filterHistory()">
+			<option value="all">All</option>
+			<option value="request">Requests Only</option>
+			<option value="completion">Completions Only</option>
+		</select>
+	</div>
+	
+	<div id="work-orders-container">
+		<p>Loading work orders...</p>
+	</div>
+	
+	<a href={ "/rail/"+railType } class="btn">Back to Rail Management</a>
+	
+	<script>
+		let allOrders = [];
+		
+		function getHistoryRowClass(order) {
+			if (order.work_completion_order) {
+				return 'history-completion';
+			} else if (order.work_request_order) {
+				return 'history-request';
+			}
+			return '';
+		}
+		
+		function renderHistoryTable(orders) {
+			const container = document.getElementById('work-orders-container');
+			if (orders.length === 0) {
+				container.innerHTML = '<p>No work orders found.</p>';
+				return;
+			}
+			
+			let html = '<table class="work-order-table"><thead><tr>';
+			html += '<th>Bag Number</th><th>Date</th><th>Request</th><th>Completion</th>';
+			html += '<th>Main Trolley</th><th>Secondary Trolley</th><th>Clutch</th>';
+			html += '<th>Large Rope</th><th>Small Rope</th><th>Bag Weight</th>';
+			html += '<th>Rope Weight</th><th>Frame</th><th>Carabina</th><th>Fabric</th>';
+			html += '</tr></thead><tbody>';
+			
+			orders.forEach(order => {
+				const date = new Date(order.date).toLocaleString();
+				const rowClass = getHistoryRowClass(order);
+				html += `<tr class="${rowClass}">
+					<td>${order.bag_number}</td>
+					<td>${date}</td>
+					<td>${order.work_request_order ? 'Yes' : 'No'}</td>
+					<td>${order.work_completion_order ? 'Yes' : 'No'}</td>
+					<td>${order.main_trolley ? 'Yes' : 'No'}</td>
+					<td>${order.secondary_trolley ? 'Yes' : 'No'}</td>
+					<td>${order.clutch ? 'Yes' : 'No'}</td>
+					<td>${order.large_rope ? 'Yes' : 'No'}</td>
+					<td>${order.small_rope ? 'Yes' : 'No'}</td>
+					<td>${order.bag_weight ? 'Yes' : 'No'}</td>
+					<td>${order.rope_weight ? 'Yes' : 'No'}</td>
+					<td>${order.frame ? 'Yes' : 'No'}</td>
+					<td>${order.carabina ? 'Yes' : 'No'}</td>
+					<td>${order.fabric ? 'Yes' : 'No'}</td>
+				</tr>`;
+			});
+			
+			html += '</tbody></table>';
+			container.innerHTML = html;
+		}
+		
+		function filterHistory() {
+			const filterType = document.getElementById('filter-type').value;
+			let filteredOrders = [...allOrders];
+			
+			if (filterType === 'request') {
+				filteredOrders = filteredOrders.filter(order => order.work_request_order && !order.work_completion_order);
+			} else if (filterType === 'completion') {
+				filteredOrders = filteredOrders.filter(order => order.work_completion_order);
+			}
+			// else 'all' - show all
+			
+			renderHistoryTable(filteredOrders);
+		}
+		
+		function loadWorkOrders() {
+			const railType = document.getElementById('rail-type').value;
+			fetch(`/api/${railType}/work-orders`)
+				.then(response => response.json())
+				.then(orders => {
+					allOrders = orders;
+					filterHistory(); // Initial render with current filter
+				})
+				.catch(error => {
+					document.getElementById('work-orders-container').innerHTML = 
+						'<p class="error">Failed to load work orders: ' + error.message + '</p>';
+				});
+		}
+		
+		// Load on page load
+		document.addEventListener('DOMContentLoaded', loadWorkOrders);
+	</script>
+	
+
+}

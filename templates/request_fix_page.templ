@@ -1,0 +1,154 @@
+package templates
+
+templ RequestFixPage(railType string) {
+	@Layout("Request Fix - "+railType+" Rail", requestFixContent(railType))
+}
+
+templ requestFixContent(railType string) {
+	<input type="hidden" id="rail-type" value={ railType } />
+	<h1>Request Fix - { railType } Rail</h1>
+	<p>Submit a work request for a bag on the { railType } rail.</p>
+	
+	<div class="form">
+		<div class="form-field">
+			<label for="bag-number-input">Bag Number *</label>
+			<input 
+				type="number" 
+				id="bag-number-input" 
+				min="0" 
+				required
+				onkeydown="if(event.key === 'Enter') submitRequest()"
+			>
+		</div>
+		
+		<div class="form-field">
+			<fieldset>
+				<legend>Select items to fix (at least one required)</legend>
+				
+				<div class="checkbox-group">
+					<label>
+						<input type="checkbox" id="main-trolley" value="main_trolley">
+						Main Trolley
+					</label>
+					<label>
+						<input type="checkbox" id="secondary-trolley" value="secondary_trolley">
+						Secondary Trolley
+					</label>
+					<label>
+						<input type="checkbox" id="clutch" value="clutch">
+						Clutch
+					</label>
+					<label>
+						<input type="checkbox" id="large-rope" value="large_rope">
+						Large Rope
+					</label>
+					<label>
+						<input type="checkbox" id="small-rope" value="small_rope">
+						Small Rope
+					</label>
+					<label>
+						<input type="checkbox" id="bag-weight" value="bag_weight">
+						Bag Weight
+					</label>
+					<label>
+						<input type="checkbox" id="rope-weight" value="rope_weight">
+						Rope Weight
+					</label>
+					<label>
+						<input type="checkbox" id="frame" value="frame">
+						Frame
+					</label>
+					<label>
+						<input type="checkbox" id="carabina" value="carabina">
+						Carabina
+					</label>
+					<label>
+						<input type="checkbox" id="fabric" value="fabric">
+						Fabric
+					</label>
+				</div>
+				<p id="checkbox-error" class="error hidden">Please select at least one item.</p>
+			</fieldset>
+		</div>
+		
+		<div id="form-error" class="error hidden"></div>
+		
+		<div class="form-actions">
+			<button class="btn" onclick="submitRequest()">Submit Request</button>
+			<a href={ "/rail/"+railType } class="btn secondary">Cancel</a>
+		</div>
+	</div>
+	
+	<script>
+		function submitRequest() {
+			const railType = document.getElementById('rail-type').value;
+			const bagInput = document.getElementById('bag-number-input');
+			const bagNumber = bagInput.value.trim();
+			
+			// Clear previous errors
+			document.getElementById('form-error').classList.add('hidden');
+			document.getElementById('checkbox-error').classList.add('hidden');
+			
+			// Validate bag number
+			if (!bagNumber) {
+				showError('Bag number is required');
+				bagInput.focus();
+				return;
+			}
+			
+			// Validate at least one checkbox checked
+			const checkboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
+			let checked = false;
+			const flags = {};
+			checkboxes.forEach(cb => {
+				if (cb.checked) {
+					checked = true;
+					flags[cb.value] = true;
+				}
+			});
+			if (!checked) {
+				document.getElementById('checkbox-error').classList.remove('hidden');
+				return;
+			}
+			
+			// Submit request
+			fetch(`/api/${railType}/work-order`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					bag_number: parseInt(bagNumber, 10),
+					flags: flags
+				})
+			})
+			.then(response => {
+				if (!response.ok) {
+					return response.json().then(err => {
+						throw new Error(err.error || 'Request failed');
+					});
+				}
+				return response.json();
+			})
+			.then(data => {
+				if (data.success) {
+					// Redirect to history page or show success message
+					window.location.href = `/rail/${railType}/history`;
+				} else {
+					showError(data.error || 'Unknown error');
+				}
+			})
+			.catch(error => {
+				showError(error.message || 'Network error');
+			});
+		}
+		
+		function showError(message) {
+			const errorEl = document.getElementById('form-error');
+			errorEl.textContent = message;
+			errorEl.classList.remove('hidden');
+		}
+	</script>
+	
+
+}

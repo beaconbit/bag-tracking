@@ -1,8 +1,10 @@
 .PHONY: build run test clean tidy
 
+TEMPL = $(shell go env GOPATH)/bin/templ
+
 build: tidy
 	@echo "Building..."
-	@templ generate
+	@$(TEMPL) generate
 	@go build -o piechart-demo .
 
 run: build
@@ -11,8 +13,8 @@ run: build
 
 dev:
 	@echo "Starting dev server..."
-	@templ generate --watch & \
-		go run main.go & \
+	@$(TEMPL) generate --watch & \
+		go run . & \
 		wait
 
 tidy:

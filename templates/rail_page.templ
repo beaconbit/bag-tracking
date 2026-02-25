@@ -1,0 +1,70 @@
+package templates
+
+templ RailPage(railType string) {
+	@Layout(railType + " Rail", railPageContent(railType))
+}
+
+templ railPageContent(railType string) {
+	<input type="hidden" id="rail-type" value={ railType } />
+	<h1>{ railType } Rail</h1>
+	<p>Manage bags on the { railType } rail.</p>
+	<div class="button-group">
+		<a href={ "/rail/"+railType+"/add-bag" } class="btn">
+			Add Bag
+		</a>
+		<a href={ "/rail/"+railType+"/remove-bag" } class="btn danger">
+			Remove Bag
+		</a>
+		<a href={ "/rail/"+railType+"/request-fix" } class="btn">
+			Request Fix
+		</a>
+		<a href={ "/rail/"+railType+"/record-fix" } class="btn">
+			Record Fix
+		</a>
+		<a href={ "/rail/"+railType+"/history" } class="btn">
+			History
+		</a>
+	</div>
+	<div id="bag-list">
+		<!-- Bag list will be loaded here -->
+		<p>No bags added yet.</p>
+	</div>
+	<script>
+		function getBagStatusClass(fixed, inProduction) {
+			if (fixed && inProduction) {
+				return 'bag-status-green';
+			} else if (fixed && !inProduction) {
+				return 'bag-status-yellow';
+			} else {
+				return 'bag-status-red';
+			}
+		}
+		
+		function loadBags() {
+			const railType = document.getElementById('rail-type').value;
+			fetch(`/api/${railType}/bags`)
+			.then(response => response.json())
+			.then(bags => {
+				const container = document.getElementById('bag-list');
+				if (bags.length === 0) {
+					container.innerHTML = '<p>No bags added yet.</p>';
+					return;
+				}
+				let html = '<table class="bag-table"><thead><tr><th>Bag Number</th><th>Fixed</th><th>In Production</th></tr></thead><tbody>';
+				bags.forEach(bag => {
+					const statusClass = getBagStatusClass(bag.fixed, bag.in_production);
+					html += `<tr class="${statusClass}">
+						<td>${bag.bag_number}</td>
+						<td>${bag.fixed ? 'Yes' : 'No'}</td>
+						<td>${bag.in_production ? 'Yes' : 'No'}</td>
+					</tr>`;
+				});
+				html += '</tbody></table>';
+				container.innerHTML = html;
+			});
+		}
+		
+		// Load bags on page load
+		document.addEventListener('DOMContentLoaded', loadBags);
+	</script>
+}

@@ -1,0 +1,26 @@
+package templates
+
+import "bag-tracker/components/form"
+
+templ FormPage() {
+	@Layout("Form Demo", formPageContent())
+}
+
+templ formPageContent() {
+	<h1>Form Demo</h1>
+	<p>This page demonstrates a reusable form component with validation and submission handling.</p>
+	<div class="demo-section">
+		@form.Form(form.FormData{
+			ID:     "demo-form",
+			Title:  "Sample Form",
+			Action: "/api/form/submit",
+			Method: "POST",
+			Fields: []form.FormField{
+				{Name: "name", Label: "Name", Type: "text", Required: true, Placeholder: "Enter your name"},
+				{Name: "email", Label: "Email", Type: "email", Required: true, Placeholder: "Enter your email"},
+				{Name: "message", Label: "Message", Type: "textarea", Required: false, Placeholder: "Enter your message"},
+			},
+			Submitted: false,
+		})
+	</div>
+}
