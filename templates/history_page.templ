@@ -43,7 +43,8 @@ templ HistoryPage(railType string) {
 				return;
 			}
 			
-			let html = '<table class="work-order-table"><thead><tr>';
+			let html = '<div class="table-scroll-wrapper">';
+			html += '<table class="work-order-table"><thead><tr>';
 			html += '<th>Bag Number</th><th>Date</th><th>Request</th><th>Completion</th>';
 			html += '<th>Main Trolley</th><th>Secondary Trolley</th><th>Clutch</th>';
 			html += '<th>Large Rope</th><th>Small Rope</th><th>Bag Weight</th>';
@@ -72,6 +73,7 @@ templ HistoryPage(railType string) {
 			});
 			
 			html += '</tbody></table>';
+			html += '</div>';
 			container.innerHTML = html;
 		}
 		

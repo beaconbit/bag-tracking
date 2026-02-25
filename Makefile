@@ -5,11 +5,11 @@ TEMPL = $(shell go env GOPATH)/bin/templ
 build: tidy
 	@echo "Building..."
 	@$(TEMPL) generate
-	@go build -o piechart-demo .
+	@go build -o bag-tracker .
 
 run: build
 	@echo "Starting server..."
-	@./piechart-demo
+	@./bag-tracker
 
 dev:
 	@echo "Starting dev server..."
@@ -23,7 +23,7 @@ tidy:
 
 clean:
 	@echo "Cleaning..."
-	@rm -f piechart-demo
+	@rm -f bag-tracker
 	@rm -f components/*_templ.go templates/*_templ.go
 
 test:

@@ -1,81 +1,47 @@
-2026/02/25 09:35:19 Database initialized at data/bagtracker.db
+2026/02/25 10:13:16 Database initialized at data/bagtracker.db
 Server starting on http://localhost:8089
 Press Ctrl+C to stop
-2026/02/25 09:35:54 GET /health completed in 150.536µs
-2026/02/25 09:35:54 [topaz/UaEBnwMOmn-000001] "GET http://localhost:8089/health HTTP/1.1" from [::1]:49262 - 200 2B in 204.427µs
-2026/02/25 09:36:27 GET /api/sorting/bags completed in 580.372µs
-2026/02/25 09:36:27 [topaz/UaEBnwMOmn-000002] "GET http://localhost:8089/api/sorting/bags HTTP/1.1" from [::1]:59398 - 200 385B in 645.485µs
-2026/02/25 09:37:06 Created work order for bag 100 in sorting_bag_work_order
-2026/02/25 09:37:06 Deactivated bag 100 in sorting_bag_rail (set fixed and in_production to false)
-2026/02/25 09:37:06 POST /api/sorting/work-order completed in 9.523527ms
-2026/02/25 09:37:06 [topaz/UaEBnwMOmn-000003] "POST http://localhost:8089/api/sorting/work-order HTTP/1.1" from [::1]:60076 - 200 17B in 9.538578ms
-2026/02/25 09:37:30 GET /api/sorting/bags completed in 263.988µs
-2026/02/25 09:37:30 [topaz/UaEBnwMOmn-000004] "GET http://localhost:8089/api/sorting/bags HTTP/1.1" from [::1]:45626 - 200 387B in 314.502µs
-2026/02/25 09:38:00 Created work order for bag 200 in sorting_bag_work_order
-2026/02/25 09:38:00 Marked bag 200 as fixed in sorting_bag_rail (set fixed = TRUE, in_production = FALSE)
-2026/02/25 09:38:00 POST /api/sorting/record-fix completed in 6.143934ms
-2026/02/25 09:38:00 [topaz/UaEBnwMOmn-000005] "POST http://localhost:8089/api/sorting/record-fix HTTP/1.1" from [::1]:44416 - 200 17B in 6.162402ms
-2026/02/25 09:38:20 GET /api/sorting/bags completed in 330.659µs
-2026/02/25 09:38:20 [topaz/UaEBnwMOmn-000006] "GET http://localhost:8089/api/sorting/bags HTTP/1.1" from [::1]:59978 - 200 388B in 377.651µs
-2026/02/25 09:38:45 Created work order for bag 999 in sorting_bag_work_order
-2026/02/25 09:38:45 POST /api/sorting/work-order completed in 3.700124ms
-2026/02/25 09:38:45 [topaz/UaEBnwMOmn-000007] "POST http://localhost:8089/api/sorting/work-order HTTP/1.1" from [::1]:47258 - 200 17B in 3.745838ms
-2026/02/25 09:39:10 GET /api/sorting/bags completed in 250.134µs
-2026/02/25 09:39:10 [topaz/UaEBnwMOmn-000008] "GET http://localhost:8089/api/sorting/bags HTTP/1.1" from [::1]:50412 - 200 388B in 294.959µs
-2026/02/25 09:39:41 Created work order for bag 888 in sorting_bag_work_order
-2026/02/25 09:39:41 POST /api/sorting/record-fix completed in 3.101441ms
-2026/02/25 09:39:41 [topaz/UaEBnwMOmn-000009] "POST http://localhost:8089/api/sorting/record-fix HTTP/1.1" from [::1]:46098 - 200 17B in 3.123171ms
-2026/02/25 09:40:09 GET /api/sorting/work-orders completed in 666.031µs
-2026/02/25 09:40:09 [topaz/UaEBnwMOmn-000010] "GET http://localhost:8089/api/sorting/work-orders HTTP/1.1" from [::1]:53392 - 200 3739B in 741.806µs
-2026/02/25 09:40:34 GET /rail/sorting/add-bag completed in 733.084µs
-2026/02/25 09:40:34 [topaz/UaEBnwMOmn-000011] "GET http://bags.aucklandweb.com/rail/sorting/add-bag HTTP/1.1" from 104.23.198.18 - 200 1069B in 796.11µs
-2026/02/25 09:40:37 GET /rail/sorting/add-bag completed in 2.051885ms
-2026/02/25 09:40:37 [topaz/UaEBnwMOmn-000012] "GET http://bags.aucklandweb.com/rail/sorting/add-bag HTTP/1.1" from 104.23.198.18 - 200 1069B in 2.111146ms
-2026/02/25 09:40:37 GET /static/css/styles.css completed in 3.006558ms
-2026/02/25 09:40:37 [topaz/UaEBnwMOmn-000013] "GET http://bags.aucklandweb.com/static/css/styles.css HTTP/1.1" from 104.23.198.114 - 200 2473B in 3.39207ms
-2026/02/25 09:40:37 GET /favicon.ico completed in 13.543µs
-2026/02/25 09:40:37 [topaz/UaEBnwMOmn-000014] "GET http://bags.aucklandweb.com/favicon.ico HTTP/1.1" from 104.23.198.129 - 404 43B in 239.96µs
-2026/02/25 09:40:39 GET /api/sorting/work-orders completed in 765.688µs
-2026/02/25 09:40:39 [topaz/UaEBnwMOmn-000015] "GET http://localhost:8089/api/sorting/work-orders HTTP/1.1" from [::1]:53584 - 200 3739B in 832.545µs
-2026/02/25 09:40:40 GET / completed in 160.711µs
-2026/02/25 09:40:40 [topaz/UaEBnwMOmn-000016] "GET http://bags.aucklandweb.com/ HTTP/1.1" from 104.23.198.18 - 200 408B in 280.45µs
-2026/02/25 09:40:41 GET /rail/sorting completed in 189.81µs
-2026/02/25 09:40:41 [topaz/UaEBnwMOmn-000017] "GET http://bags.aucklandweb.com/rail/sorting HTTP/1.1" from 104.23.198.18 - 200 938B in 321.409µs
-2026/02/25 09:40:41 GET /api/sorting/bags completed in 340.3µs
-2026/02/25 09:40:41 [topaz/UaEBnwMOmn-000018] "GET http://bags.aucklandweb.com/api/sorting/bags HTTP/1.1" from 104.23.198.18 - 200 206B in 507.537µs
-2026/02/25 09:41:00 GET /rail/sorting/history completed in 437.494µs
-2026/02/25 09:41:00 [topaz/UaEBnwMOmn-000019] "GET http://bags.aucklandweb.com/rail/sorting/history HTTP/1.1" from 104.23.198.18 - 200 1368B in 513.606µs
-2026/02/25 09:41:00 GET /api/sorting/work-orders completed in 331.258µs
-2026/02/25 09:41:00 [topaz/UaEBnwMOmn-000020] "GET http://bags.aucklandweb.com/api/sorting/work-orders HTTP/1.1" from 104.23.198.18 - 200 658B in 589.849µs
-2026/02/25 09:41:44 Created work order for bag 0 in sorting_bag_work_order
-2026/02/25 09:41:44 POST /api/sorting/work-order completed in 3.113039ms
-2026/02/25 09:41:44 [topaz/UaEBnwMOmn-000021] "POST http://localhost:8089/api/sorting/work-order HTTP/1.1" from [::1]:47640 - 200 17B in 3.133455ms
-2026/02/25 09:42:13 Created work order for bag 0 in sorting_bag_work_order
-2026/02/25 09:42:13 POST /api/sorting/record-fix completed in 2.629335ms
-2026/02/25 09:42:13 [topaz/UaEBnwMOmn-000022] "POST http://localhost:8089/api/sorting/record-fix HTTP/1.1" from [::1]:35600 - 200 17B in 2.741701ms
-2026/02/25 09:42:52 Created work order for bag 300 in sorting_bag_work_order
-2026/02/25 09:42:52 Deactivated bag 300 in sorting_bag_rail (set fixed and in_production to false)
-2026/02/25 09:42:52 POST /api/sorting/work-order completed in 8.364541ms
-2026/02/25 09:42:52 [topaz/UaEBnwMOmn-000023] "POST http://localhost:8089/api/sorting/work-order HTTP/1.1" from [::1]:60250 - 200 17B in 8.379204ms
-2026/02/25 09:43:22 GET /api/sorting/bags completed in 293.121µs
-2026/02/25 09:43:22 [topaz/UaEBnwMOmn-000024] "GET http://localhost:8089/api/sorting/bags HTTP/1.1" from [::1]:49274 - 200 390B in 363.625µs
-2026/02/25 09:43:53 Created work order for bag 300 in sorting_bag_work_order
-2026/02/25 09:43:53 Marked bag 300 as fixed in sorting_bag_rail (set fixed = TRUE, in_production = FALSE)
-2026/02/25 09:43:53 POST /api/sorting/record-fix completed in 6.520058ms
-2026/02/25 09:43:53 [topaz/UaEBnwMOmn-000025] "POST http://localhost:8089/api/sorting/record-fix HTTP/1.1" from [::1]:45216 - 200 17B in 6.540402ms
-2026/02/25 09:44:25 GET /api/sorting/bags completed in 411.666µs
-2026/02/25 09:44:25 [topaz/UaEBnwMOmn-000026] "GET http://localhost:8089/api/sorting/bags HTTP/1.1" from [::1]:57080 - 200 389B in 461.342µs
-2026/02/25 09:51:26 GET /rail/sorting/history completed in 1.07854ms
-2026/02/25 09:51:26 [topaz/UaEBnwMOmn-000027] "GET http://bags.aucklandweb.com/rail/sorting/history HTTP/1.1" from 104.23.198.18 - 200 1368B in 1.155256ms
-2026/02/25 09:51:26 GET /api/sorting/work-orders completed in 991.98µs
-2026/02/25 09:51:26 [topaz/UaEBnwMOmn-000028] "GET http://bags.aucklandweb.com/api/sorting/work-orders HTTP/1.1" from 104.23.198.18 - 200 827B in 1.22136ms
-2026/02/25 09:51:30 GET / completed in 961.419µs
-2026/02/25 09:51:30 [topaz/UaEBnwMOmn-000029] "GET http://bags.aucklandweb.com/ HTTP/1.1" from 104.23.198.18 - 200 408B in 1.014877ms
-2026/02/25 09:51:31 GET /rail/sorting completed in 248.273µs
-2026/02/25 09:51:31 [topaz/UaEBnwMOmn-000030] "GET http://bags.aucklandweb.com/rail/sorting HTTP/1.1" from 104.23.198.18 - 200 938B in 380.633µs
-2026/02/25 09:51:31 GET /api/sorting/bags completed in 324.407µs
-2026/02/25 09:51:31 [topaz/UaEBnwMOmn-000031] "GET http://bags.aucklandweb.com/api/sorting/bags HTTP/1.1" from 104.23.198.18 - 200 202B in 512.316µs
-2026/02/25 09:51:35 GET /rail/sorting/record-fix completed in 476.98µs
-2026/02/25 09:51:35 [topaz/UaEBnwMOmn-000032] "GET http://bags.aucklandweb.com/rail/sorting/record-fix HTTP/1.1" from 104.23.198.18 - 200 2112B in 617.036µs
-2026/02/25 09:53:52 GET /rail/sorting/record-fix completed in 352.604µs
-2026/02/25 09:53:52 [topaz/UaEBnwMOmn-000033] "GET http://bags.aucklandweb.com/rail/sorting/record-fix HTTP/1.1" from 104.23.198.18 - 200 2112B in 466.296µs
+2026/02/25 10:13:26 GET / completed in 154.755µs
+2026/02/25 10:13:26 [topaz/JAMgweMQ35-000001] "GET http://localhost:8089/ HTTP/1.1" from [::1]:39084 - 200 888B in 203.918µs
+2026/02/25 10:13:37 GET /rail/sorting/history completed in 747.978µs
+2026/02/25 10:13:37 [topaz/JAMgweMQ35-000002] "GET http://bags.aucklandweb.com/rail/sorting/history HTTP/1.1" from 104.23.198.19 - 200 1389B in 803.167µs
+2026/02/25 10:13:37 GET /favicon.ico completed in 783.317µs
+2026/02/25 10:13:37 [topaz/JAMgweMQ35-000003] "GET http://bags.aucklandweb.com/favicon.ico HTTP/1.1" from 104.23.198.128 - 404 43B in 888.351µs
+2026/02/25 10:13:37 GET /api/sorting/work-orders completed in 1.777997ms
+2026/02/25 10:13:37 [topaz/JAMgweMQ35-000004] "GET http://bags.aucklandweb.com/api/sorting/work-orders HTTP/1.1" from 104.23.198.19 - 200 827B in 2.059293ms
+2026/02/25 10:13:55 GET /rail/clean/history completed in 395.616µs
+2026/02/25 10:13:55 [topaz/JAMgweMQ35-000005] "GET http://bags.aucklandweb.com/rail/clean/history HTTP/1.1" from 104.23.198.19 - 200 1387B in 542.176µs
+2026/02/25 10:13:56 GET /api/clean/work-orders completed in 314.488µs
+2026/02/25 10:13:56 [topaz/JAMgweMQ35-000006] "GET http://bags.aucklandweb.com/api/clean/work-orders HTTP/1.1" from 104.23.198.19 - 200 272B in 489.647µs
+2026/02/25 10:13:59 GET / completed in 279.372µs
+2026/02/25 10:13:59 [topaz/JAMgweMQ35-000007] "GET http://bags.aucklandweb.com/ HTTP/1.1" from 104.23.198.19 - 200 408B in 477.45µs
+2026/02/25 10:14:00 GET /rail/sorting completed in 256.857µs
+2026/02/25 10:14:00 [topaz/JAMgweMQ35-000008] "GET http://bags.aucklandweb.com/rail/sorting HTTP/1.1" from 104.23.198.19 - 200 938B in 394.604µs
+2026/02/25 10:14:00 GET /api/sorting/bags completed in 297.127µs
+2026/02/25 10:14:00 [topaz/JAMgweMQ35-000009] "GET http://bags.aucklandweb.com/api/sorting/bags HTTP/1.1" from 104.23.198.19 - 200 202B in 477.826µs
+2026/02/25 10:14:02 GET /rail/sorting/history completed in 342.911µs
+2026/02/25 10:14:02 [topaz/JAMgweMQ35-000010] "GET http://bags.aucklandweb.com/rail/sorting/history HTTP/1.1" from 104.23.198.19 - 200 1389B in 480.603µs
+2026/02/25 10:14:02 GET /api/sorting/work-orders completed in 464.081µs
+2026/02/25 10:14:02 [topaz/JAMgweMQ35-000011] "GET http://bags.aucklandweb.com/api/sorting/work-orders HTTP/1.1" from 104.23.198.19 - 200 827B in 708.566µs
+2026/02/25 10:14:06 GET /rail/sorting/history completed in 259.433µs
+2026/02/25 10:14:06 [topaz/JAMgweMQ35-000012] "GET http://bags.aucklandweb.com/rail/sorting/history HTTP/1.1" from 104.23.198.19 - 200 1389B in 368.079µs
+2026/02/25 10:14:06 GET /api/sorting/work-orders completed in 397.666µs
+2026/02/25 10:14:06 [topaz/JAMgweMQ35-000013] "GET http://bags.aucklandweb.com/api/sorting/work-orders HTTP/1.1" from 104.23.198.19 - 200 827B in 663.867µs
+2026/02/25 10:14:19 GET /rail/sorting completed in 249.786µs
+2026/02/25 10:14:19 [topaz/JAMgweMQ35-000014] "GET http://bags.aucklandweb.com/rail/sorting HTTP/1.1" from 104.23.198.19 - 200 938B in 383.927µs
+2026/02/25 10:14:19 GET /api/sorting/bags completed in 222.618µs
+2026/02/25 10:14:19 [topaz/JAMgweMQ35-000015] "GET http://bags.aucklandweb.com/api/sorting/bags HTTP/1.1" from 104.23.198.19 - 200 202B in 413.706µs
+2026/02/25 10:14:53 GET /rail/sorting completed in 176.954µs
+2026/02/25 10:14:53 [topaz/JAMgweMQ35-000016] "GET http://bags.aucklandweb.com/rail/sorting HTTP/1.1" from 104.23.198.19 - 200 938B in 289.48µs
+2026/02/25 10:14:53 GET /api/sorting/bags completed in 229.383µs
+2026/02/25 10:14:53 [topaz/JAMgweMQ35-000017] "GET http://bags.aucklandweb.com/api/sorting/bags HTTP/1.1" from 104.23.198.19 - 200 202B in 427.37µs
+2026/02/25 10:15:06 GET /rail/sorting/history completed in 290.425µs
+2026/02/25 10:15:06 [topaz/JAMgweMQ35-000018] "GET http://bags.aucklandweb.com/rail/sorting/history HTTP/1.1" from 104.23.198.19 - 200 1389B in 468.114µs
+2026/02/25 10:15:06 GET /api/sorting/work-orders completed in 360.641µs
+2026/02/25 10:15:06 [topaz/JAMgweMQ35-000019] "GET http://bags.aucklandweb.com/api/sorting/work-orders HTTP/1.1" from 104.23.198.19 - 200 827B in 667.021µs
+2026/02/25 10:15:13 GET /rail/sorting completed in 231.713µs
+2026/02/25 10:15:13 [topaz/JAMgweMQ35-000020] "GET http://bags.aucklandweb.com/rail/sorting HTTP/1.1" from 104.23.198.19 - 200 938B in 348.135µs
+2026/02/25 10:15:14 GET /api/sorting/bags completed in 229.172µs
+2026/02/25 10:15:14 [topaz/JAMgweMQ35-000021] "GET http://bags.aucklandweb.com/api/sorting/bags HTTP/1.1" from 104.23.198.19 - 200 202B in 445.057µs
+2026/02/25 10:15:17 GET /rail/sorting/record-fix completed in 334.222µs
+2026/02/25 10:15:17 [topaz/JAMgweMQ35-000022] "GET http://bags.aucklandweb.com/rail/sorting/record-fix HTTP/1.1" from 104.23.198.19 - 200 2112B in 485.62µs

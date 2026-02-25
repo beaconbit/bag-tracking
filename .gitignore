@@ -1,6 +1,7 @@
 # Binaries
 whale
 piechart-demo
+bag-tracker
 server
 *.exe
 *.out
