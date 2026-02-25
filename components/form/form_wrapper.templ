@@ -1,0 +1,17 @@
+package form
+
+templ FormComponent(data FormData) {
+    <form id={ data.ID } class="form" action={ data.Action } method={ data.Method }>
+        <h3>{ data.Title }</h3>
+        for _, field := range data.Fields {
+            @FormFieldComponent(field)
+        }
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+        if data.Submitted {
+            <div class="success">Form submitted successfully!</div>
+        }
+    </form>
+}

@@ -1,0 +1,23 @@
+package barchart
+
+import "fmt"
+
+templ BarChartContainer(data BarChartData) {
+    <div id={ data.ID } class="bar-chart-container">
+        <h3>{ data.Title }</h3>
+        <div class="chart-svg">
+            @BarChartSVG(data)
+        </div>
+        if len(data.Bars) > 0 {
+            <div class="legend">
+                for _, bar := range data.Bars {
+                    <div class="legend-item">
+                        <span class="legend-color" style={ fmt.Sprintf("background-color: %s", bar.Color) }></span>
+                        <span class="legend-label">{ bar.Label }</span>
+                        <span class="legend-value">{ fmt.Sprintf("%.1f", bar.Value) }</span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,549 @@
+package templates
+
+templ PieChartPage(componentHTML string) {
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Pie Chart Component</title>
+		<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@1.0.0-RC.7/bundles/datastar.js"></script>
+		<style>
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+				margin: 0;
+				padding: 40px;
+				background-color: #f5f5f5;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				min-height: 100vh;
+			}
+			.container {
+				background: white;
+				border-radius: 12px;
+				padding: 40px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+				max-width: 800px;
+				width: 100%;
+			}
+			h1 {
+				color: #333;
+				margin-bottom: 8px;
+			}
+			.subtitle {
+				color: #666;
+				margin-bottom: 24px;
+			}
+			.controls {
+				margin-bottom: 24px;
+				display: flex;
+				gap: 12px;
+			}
+			button {
+				background: #4f46e5;
+				color: white;
+				border: none;
+				padding: 12px 24px;
+				border-radius: 8px;
+				font-size: 16px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			button:hover {
+				background: #4338ca;
+			}
+			.back-link {
+				margin-top: 24px;
+				color: #4f46e5;
+				text-decoration: none;
+				font-weight: 500;
+			}
+			.back-link:hover {
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Pie Chart Component</h1>
+			<p class="subtitle">Standalone component demonstration</p>
+			
+			<div class="controls">
+				<button data-on:click="@get('/api/piechart/randomize')">
+					Randomize Chart
+				</button>
+			</div>
+			
+			<div class="chart-container">
+				@templ.Raw(componentHTML)
+			</div>
+			
+			<a href="/" class="back-link">← Back to Component Library</a>
+		</div>
+	</body>
+	</html>
+}
+
+templ BarChartPage(componentHTML string) {
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Bar Chart Component</title>
+		<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@1.0.0-RC.7/bundles/datastar.js"></script>
+		<style>
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+				margin: 0;
+				padding: 40px;
+				background-color: #f5f5f5;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				min-height: 100vh;
+			}
+			.container {
+				background: white;
+				border-radius: 12px;
+				padding: 40px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+				max-width: 800px;
+				width: 100%;
+			}
+			h1 {
+				color: #333;
+				margin-bottom: 8px;
+			}
+			.subtitle {
+				color: #666;
+				margin-bottom: 24px;
+			}
+			.controls {
+				margin-bottom: 24px;
+				display: flex;
+				gap: 12px;
+			}
+			button {
+				background: #10b981;
+				color: white;
+				border: none;
+				padding: 12px 24px;
+				border-radius: 8px;
+				font-size: 16px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			button:hover {
+				background: #0da271;
+			}
+			.back-link {
+				margin-top: 24px;
+				color: #4f46e5;
+				text-decoration: none;
+				font-weight: 500;
+			}
+			.back-link:hover {
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Bar Chart Component</h1>
+			<p class="subtitle">Standalone component demonstration</p>
+			
+			<div class="controls">
+				<button data-on:click="@get('/api/barchart/randomize')">
+					Randomize Chart
+				</button>
+			</div>
+			
+			<div class="chart-container">
+				@templ.Raw(componentHTML)
+			</div>
+			
+			<a href="/" class="back-link">← Back to Component Library</a>
+		</div>
+	</body>
+	</html>
+}
+
+templ ButtonPage() {
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Button Component</title>
+		<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@1.0.0-RC.7/bundles/datastar.js"></script>
+		<style>
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+				margin: 0;
+				padding: 40px;
+				background-color: #f5f5f5;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				min-height: 100vh;
+			}
+			.container {
+				background: white;
+				border-radius: 12px;
+				padding: 40px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+				max-width: 800px;
+				width: 100%;
+			}
+			h1 {
+				color: #333;
+				margin-bottom: 8px;
+			}
+			.subtitle {
+				color: #666;
+				margin-bottom: 24px;
+			}
+			.controls {
+				margin-bottom: 24px;
+				display: flex;
+				flex-wrap: wrap;
+				gap: 12px;
+			}
+			button {
+				background: #f59e0b;
+				color: white;
+				border: none;
+				padding: 12px 24px;
+				border-radius: 8px;
+				font-size: 16px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			button:hover {
+				background: #d4890a;
+			}
+			.back-link {
+				margin-top: 24px;
+				color: #4f46e5;
+				text-decoration: none;
+				font-weight: 500;
+			}
+			.back-link:hover {
+				text-decoration: underline;
+			}
+			.component-demo {
+				background: #f8f9fa;
+				border-radius: 8px;
+				padding: 24px;
+				margin-top: 24px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Button Component</h1>
+			<p class="subtitle">Standalone component demonstration</p>
+			
+			<div class="controls">
+				<button data-on:click="@get('/api/button/click')">
+					Click Me
+				</button>
+				<button data-on:click="@get('/api/button/toggle')">
+					Toggle State
+				</button>
+			</div>
+			
+			<div class="component-demo">
+				<div id="demo-button">
+					<button id="demo-button" class="btn btn-primary btn-medium" data-click-count="0">
+						Click me
+					</button>
+				</div>
+			</div>
+			
+			<a href="/" class="back-link">← Back to Component Library</a>
+		</div>
+	</body>
+	</html>
+}
+
+templ FormPage() {
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Form Component</title>
+		<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@1.0.0-RC.7/bundles/datastar.js"></script>
+		<style>
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+				margin: 0;
+				padding: 40px;
+				background-color: #f5f5f5;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				min-height: 100vh;
+			}
+			.container {
+				background: white;
+				border-radius: 12px;
+				padding: 40px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+				max-width: 800px;
+				width: 100%;
+			}
+			h1 {
+				color: #333;
+				margin-bottom: 8px;
+			}
+			.subtitle {
+				color: #666;
+				margin-bottom: 24px;
+			}
+			.controls {
+				margin-bottom: 24px;
+				display: flex;
+				gap: 12px;
+			}
+			button {
+				background: #ef4444;
+				color: white;
+				border: none;
+				padding: 12px 24px;
+				border-radius: 8px;
+				font-size: 16px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			button:hover {
+				background: #dc2626;
+			}
+			.back-link {
+				margin-top: 24px;
+				color: #4f46e5;
+				text-decoration: none;
+				font-weight: 500;
+			}
+			.back-link:hover {
+				text-decoration: underline;
+			}
+			.component-demo {
+				background: #f8f9fa;
+				border-radius: 8px;
+				padding: 24px;
+				margin-top: 24px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Form Component</h1>
+			<p class="subtitle">Standalone component demonstration</p>
+			
+			<div class="controls">
+				<button data-on:click="@get('/api/form/submit')">
+					Submit Form
+				</button>
+				<button data-on:click="@get('/api/form/reset')">
+					Reset Form
+				</button>
+			</div>
+			
+			<div class="component-demo">
+				<div id="demo-form">
+					<form id="demo-form" class="form" action="/api/form/submit" method="POST">
+						<h3>Contact Form</h3>
+						<div class="form-field">
+							<label for="name">Name</label>
+							<input type="text" id="name" name="name" value="" placeholder="Enter your name" required>
+						</div>
+						<div class="form-field">
+							<label for="email">Email</label>
+							<input type="email" id="email" name="email" value="" placeholder="Enter your email" required>
+						</div>
+						<div class="form-field">
+							<label for="message">Message</label>
+							<textarea id="message" name="message" placeholder="Enter your message" required></textarea>
+						</div>
+						<div class="form-field">
+							<label for="newsletter">Subscribe to newsletter</label>
+							<input type="checkbox" id="newsletter" name="newsletter" value="true" checked>
+						</div>
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary">Submit</button>
+							<button type="reset" class="btn btn-secondary">Reset</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+			<a href="/" class="back-link">← Back to Component Library</a>
+		</div>
+	</body>
+	</html>
+}
+
+templ TargetBarChartPage(componentHTML string) {
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Target Bar Chart Component</title>
+		<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@1.0.0-RC.7/bundles/datastar.js"></script>
+		<style>
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+				margin: 0;
+				padding: 40px;
+				background-color: #f5f5f5;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				min-height: 100vh;
+			}
+			.container {
+				background: white;
+				border-radius: 12px;
+				padding: 40px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+				max-width: 1000px;
+				width: 100%;
+			}
+			h1 {
+				color: #333;
+				margin-bottom: 8px;
+			}
+			.subtitle {
+				color: #666;
+				margin-bottom: 24px;
+			}
+			.controls {
+				margin-bottom: 24px;
+				display: flex;
+				gap: 12px;
+			}
+			button {
+				background: #8b5cf6;
+				color: white;
+				border: none;
+				padding: 12px 24px;
+				border-radius: 8px;
+				font-size: 16px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			button:hover {
+				background: #7c3aed;
+			}
+			.back-link {
+				margin-top: 24px;
+				color: #4f46e5;
+				text-decoration: none;
+				font-weight: 500;
+			}
+			.back-link:hover {
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Target Bar Chart Component</h1>
+			<p class="subtitle">Standalone component demonstration</p>
+			
+			<div class="controls">
+				<button data-on:click="@get('/api/targetbarchart/randomize')">
+					Randomize Chart
+				</button>
+			</div>
+			
+			<div class="chart-container">
+				@templ.Raw(componentHTML)
+			</div>
+			
+			<a href="/" class="back-link">← Back to Component Library</a>
+		</div>
+	</body>
+	</html>
+}
+
+templ StackedBarChartPage(componentHTML string) {
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Stacked Bar Chart Component</title>
+		<script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@1.0.0-RC.7/bundles/datastar.js"></script>
+		<style>
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+				margin: 0;
+				padding: 20px;
+				background-color: #f5f5f5;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				min-height: 100vh;
+			}
+			.container {
+				background: white;
+				border-radius: 12px;
+				padding: 20px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+				max-width: 1200px;
+				width: 100%;
+				box-sizing: border-box;
+			}
+			.chart-container {
+				width: 100%;
+			}
+			.back-link {
+				margin-top: 20px;
+				color: #a855f7;
+				text-decoration: none;
+				font-weight: 500;
+			}
+			.back-link:hover {
+				text-decoration: underline;
+			}
+			@media (max-width: 768px) {
+				body {
+					padding: 10px;
+				}
+				.container {
+					padding: 15px;
+					border-radius: 8px;
+				}
+			}
+			@media (max-width: 480px) {
+				body {
+					padding: 5px;
+				}
+				.container {
+					padding: 10px;
+					border-radius: 6px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="chart-container">
+				@templ.Raw(componentHTML)
+			</div>
+			<a href="/" class="back-link">← Back to Component Library</a>
+		</div>
+	</body>
+	</html>
+}

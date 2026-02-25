@@ -1,0 +1,21 @@
+package piechart
+
+import "fmt"
+
+templ PieChartContainer(data PieChartData) {
+    <div id={ data.ID } class="pie-chart-container">
+        <h3>{ data.Title }</h3>
+        <div class="chart-svg">
+            @PieChartSVG(data)
+        </div>
+        <div class="legend">
+            for _, sector := range data.Sectors {
+                <div class="legend-item">
+                    <span class="legend-color" style={ fmt.Sprintf("background-color: %s", sector.Color) }></span>
+                    <span class="legend-label">{ sector.Label }</span>
+                    <span class="legend-value">{ fmt.Sprintf("%.1f", sector.Percentage) }%</span>
+                </div>
+            }
+        </div>
+    </div>
+}

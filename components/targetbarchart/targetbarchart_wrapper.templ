@@ -1,0 +1,16 @@
+package targetbarchart
+
+templ TargetBarChartComponent(data TargetBarChartData) {
+    <div id={ data.ID } class="target-bar-chart-container">
+        <h3>{ data.Title }</h3>
+        <div class="chart-svg">
+            @TargetBarChartSVG(data)
+        </div>
+        if len(data.Bars) > 0 {
+            <div class="legend">
+                <div class="legend-item"><span class="legend-color" style="background-color: #10b981"></span><span class="legend-label">Completed sections</span></div>
+                <div class="legend-item"><span class="legend-color" style="background-color: #e9ecef"></span><span class="legend-label">Remaining sections</span></div>
+            </div>
+        }
+    </div>
+}

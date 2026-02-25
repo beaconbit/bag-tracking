@@ -1,0 +1,184 @@
+package templates
+
+templ Home() {
+	<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Component Library</title>
+		<style>
+			body {
+				font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+				max-width: 1000px;
+				margin: 0 auto;
+				padding: 40px 20px;
+				background-color: #f5f5f5;
+			}
+			.header {
+				text-align: center;
+				margin-bottom: 40px;
+			}
+			h1 {
+				color: #333;
+				margin-bottom: 8px;
+				font-size: 2.5rem;
+			}
+			.subtitle {
+				color: #666;
+				font-size: 1.2rem;
+				margin-bottom: 40px;
+			}
+			.components-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+				gap: 24px;
+			}
+			.component-card {
+				background: white;
+				border-radius: 12px;
+				padding: 24px;
+				box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+				transition: transform 0.2s, box-shadow 0.2s;
+				text-decoration: none;
+				color: inherit;
+				display: block;
+			}
+			.component-card:hover {
+				transform: translateY(-4px);
+				box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+			}
+			.component-icon {
+				width: 60px;
+				height: 60px;
+				border-radius: 12px;
+				background: #4f46e5;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: 16px;
+				color: white;
+				font-size: 24px;
+			}
+			.component-icon.piechart {
+				background: linear-gradient(135deg, #4f46e5, #8b5cf6);
+			}
+			.component-icon.barchart {
+				background: linear-gradient(135deg, #10b981, #14b8a6);
+			}
+			.component-icon.button {
+				background: linear-gradient(135deg, #f59e0b, #f97316);
+			}
+			.component-icon.form {
+				background: linear-gradient(135deg, #ef4444, #ec4899);
+			}
+			.component-icon.targetbarchart {
+				background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+			}
+			.component-icon.stackedbarchart {
+				background: linear-gradient(135deg, #06b6d4, #14b8a6);
+			}
+			.component-name {
+				font-size: 1.5rem;
+				font-weight: 600;
+				margin-bottom: 8px;
+				color: #333;
+			}
+			.component-description {
+				color: #666;
+				margin-bottom: 16px;
+				line-height: 1.5;
+			}
+			.component-endpoints {
+				font-size: 0.9rem;
+				color: #4f46e5;
+				background: #e0e7ff;
+				padding: 8px 12px;
+				border-radius: 6px;
+				margin-top: 12px;
+			}
+			.component-endpoints code {
+				font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+				font-size: 0.85rem;
+			}
+			.footer {
+				text-align: center;
+				margin-top: 60px;
+				color: #999;
+				font-size: 0.9rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<h1>Component Library</h1>
+			<p class="subtitle">Reusable UI components with isolated endpoints</p>
+		</div>
+		
+		<div class="components-grid">
+			<a href="/component/piechart" class="component-card">
+				<div class="component-icon piechart">📊</div>
+				<h2 class="component-name">Pie Chart</h2>
+				<p class="component-description">Interactive pie chart with randomization. Click to generate new data with SVG updates via Datastar.</p>
+				<div class="component-endpoints">
+					<code>GET /api/piechart/randomize</code>
+				</div>
+			</a>
+			
+			<a href="/component/barchart" class="component-card">
+				<div class="component-icon barchart">📈</div>
+				<h2 class="component-name">Bar Chart</h2>
+				<p class="component-description">Interactive bar chart with randomization. Generates new bar data with full SVG replacement.</p>
+				<div class="component-endpoints">
+					<code>GET /api/barchart/randomize</code>
+				</div>
+			</a>
+			
+			<a href="/component/button" class="component-card">
+				<div class="component-icon button">🔘</div>
+				<h2 class="component-name">Button</h2>
+				<p class="component-description">Interactive button with click tracking and state toggling. Demonstrates component interactivity.</p>
+				<div class="component-endpoints">
+					<code>GET /api/button/click</code><br>
+					<code>GET /api/button/toggle</code>
+				</div>
+			</a>
+			
+			<a href="/component/form" class="component-card">
+				<div class="component-icon form">📝</div>
+				<h2 class="component-name">Form</h2>
+				<p class="component-description">Interactive form with validation and submission handling. Shows component state management.</p>
+				<div class="component-endpoints">
+					<code>GET /api/form/submit</code><br>
+					<code>GET /api/form/reset</code>
+				</div>
+			</a>
+			
+			<a href="/component/targetbarchart" class="component-card">
+				<div class="component-icon targetbarchart">🎯</div>
+				<h2 class="component-name">Target Bar Chart</h2>
+				<p class="component-description">Target progress chart with sections representing completion. Click + and - buttons to increment/decrement completed sections per bar.</p>
+				<div class="component-endpoints">
+					<code>GET /api/targetbarchart/randomize</code><br>
+					<code>GET /api/targetbarchart/update</code>
+				</div>
+			</a>
+			
+			<a href="/component/stackedbarchart" class="component-card">
+				<div class="component-icon stackedbarchart">⏱️</div>
+				<h2 class="component-name">Stacked Bar Chart</h2>
+				<p class="component-description">Washing machine delay monitor with live clock, automatic minute updates, and interactive legend. Shows last 10 minutes of delays per machine.</p>
+				<div class="component-endpoints">
+					<code>GET /api/stackedbarchart/increment</code><br>
+					<code>GET /api/stackedbarchart/advance</code><br>
+					<code>GET /api/stackedbarchart/tick</code>
+				</div>
+			</a>
+		</div>
+		
+		<div class="footer">
+			<p>Built with Go, Templ, and Datastar • Each component is an isolated module</p>
+		</div>
+	</body>
+	</html>
+}

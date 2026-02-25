@@ -1,0 +1,32 @@
+package button
+
+import "fmt"
+
+templ ButtonComponent(data ButtonData) {
+    {{ 
+        classes := []string{"btn", "btn-" + data.Variant, "btn-" + data.Size}
+        if data.Disabled {
+            classes = append(classes, "disabled")
+        }
+        if data.Loading {
+            classes = append(classes, "loading")
+        }
+        classStr := ""
+        for i, c := range classes {
+            if i > 0 {
+                classStr += " "
+            }
+            classStr += c
+        }
+        disabledAttr := ""
+        if data.Disabled {
+            disabledAttr = "disabled"
+        }
+    }}
+    <button id={ data.ID } class={ classStr } { disabledAttr } data-click-count={ fmt.Sprintf("%d", data.ClickCount) }>
+        if data.Loading {
+            <span class="spinner"></span>
+        }
+        { data.Label }
+    </button>
+}

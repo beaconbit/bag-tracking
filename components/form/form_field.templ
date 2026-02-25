@@ -1,0 +1,39 @@
+package form
+
+templ FormFieldComponent(field FormField) {
+    <div class="form-field">
+        <label for={ field.ID }>{ field.Label }</label>
+        {{ 
+            requiredAttr := ""
+            if field.Required {
+                requiredAttr = "required"
+            }
+            disabledAttr := ""
+            if field.Disabled {
+                disabledAttr = "disabled"
+            }
+            checkedAttr := ""
+            if field.Type == FieldCheckbox && field.Value == "true" {
+                checkedAttr = "checked"
+            }
+        }}
+        if field.Type == FieldText || field.Type == FieldEmail || field.Type == FieldPassword || field.Type == FieldNumber {
+            <input type={ string(field.Type) } id={ field.ID } name={ field.Name } value={ field.Value } placeholder={ field.Placeholder } { requiredAttr } { disabledAttr }>
+        } else if field.Type == FieldTextarea {
+            <textarea id={ field.ID } name={ field.Name } placeholder={ field.Placeholder } { requiredAttr } { disabledAttr }>
+                { field.Value }
+            </textarea>
+        } else if field.Type == FieldSelect {
+            <select id={ field.ID } name={ field.Name } { requiredAttr } { disabledAttr }>
+                for _, option := range field.Options {
+                    <option value={ option.Value }>{ option.Label }</option>
+                }
+            </select>
+        } else if field.Type == FieldCheckbox {
+            <input type="checkbox" id={ field.ID } name={ field.Name } value={ field.Value } { requiredAttr } { disabledAttr } { checkedAttr }>
+        }
+        if field.Error != "" {
+            <div class="error">{ field.Error }</div>
+        }
+    </div>
+}

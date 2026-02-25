@@ -1,0 +1,128 @@
+package targetbarchart
+
+import "fmt"
+
+templ TargetBarChartSVG(data TargetBarChartData) {
+    {{ 
+        // SVG dimensions and viewBox
+        svgWidth := data.Width
+        svgHeight := data.Height
+        marginTop := 60
+        marginRight := 20
+        marginBottom := 80
+        marginLeft := 80
+        chartWidth := svgWidth - marginLeft - marginRight
+        chartHeight := svgHeight - marginTop - marginBottom
+    }}
+    <svg width={ fmt.Sprintf("%d", svgWidth) } height={ fmt.Sprintf("%d", svgHeight) } viewBox={ fmt.Sprintf("0 0 %d %d", svgWidth, svgHeight) } xmlns="http://www.w3.org/2000/svg">
+        {{ 
+            // Draw chart background
+        }}
+        <rect x={ fmt.Sprintf("%d", marginLeft) } y={ fmt.Sprintf("%d", marginTop) } width={ fmt.Sprintf("%d", chartWidth) } height={ fmt.Sprintf("%d", chartHeight) } fill="#f8f9fa" stroke="#ddd" stroke-width="1"/>
+        if len(data.Bars) > 0 {
+            {{ 
+                barAreaWidth := chartWidth / len(data.Bars)
+                barWidth := barAreaWidth - 20 // Leave spacing between bars
+
+                // Find max target for scaling Y axis (optional, since bar height fixed)
+                maxTarget := 0
+                for _, bar := range data.Bars {
+                    if bar.Target > maxTarget {
+                        maxTarget = bar.Target
+                    }
+                }
+                if maxTarget == 0 {
+                    maxTarget = 1
+                }
+            }}
+            for i, bar := range data.Bars {
+                {{ 
+                    // Calculate position for this bar
+                    x := marginLeft + (i * barAreaWidth) + (barAreaWidth-barWidth)/2
+                    y := marginTop + chartHeight - data.BarHeight
+                }}
+                {{ 
+                    // Draw bar background (empty bar)
+                }}
+                <rect x={ fmt.Sprintf("%d", x) } y={ fmt.Sprintf("%d", y) } width={ fmt.Sprintf("%d", barWidth) } height={ fmt.Sprintf("%d", data.BarHeight) } fill="#e9ecef" stroke="#ccc" stroke-width="1"/>
+                if bar.Target > 0 {
+                    {{ 
+                        sectionHeight := float64(data.BarHeight) / float64(bar.Target)
+                        completed := bar.Completed
+                        if completed > bar.Target {
+                            completed = bar.Target
+                        }
+                    }}
+                    for s := 0; s < completed; s++ {
+                        {{ 
+                            sectionY := y + data.BarHeight - int(float64(s+1)*sectionHeight)
+                            sectionH := int(sectionHeight)
+                            // Ensure last section aligns with bottom
+                            if s == completed-1 {
+                                // Adjust height to avoid gaps due to rounding
+                                sectionH = int(float64(s+1)*sectionHeight) - int(float64(s)*sectionHeight)
+                            }
+                        }}
+                        <rect x={ fmt.Sprintf("%d", x) } y={ fmt.Sprintf("%d", sectionY) } width={ fmt.Sprintf("%d", barWidth) } height={ fmt.Sprintf("%d", sectionH) } fill="#10b981" stroke="#fff" stroke-width="0.5"/>
+                    }
+                }
+                {{ 
+                    // Draw bar label (product name) under bar
+                    labelX := x + barWidth/2
+                    labelY := marginTop + chartHeight + 20
+                }}
+                <text x={ fmt.Sprintf("%d", labelX) } y={ fmt.Sprintf("%d", labelY) } text-anchor="middle" font-size="12" fill="#333">{ bar.Label }</text>
+                {{ 
+                    // Draw progress label (completed/target) above bar
+                    progressText := fmt.Sprintf("%d/%d", bar.Completed, bar.Target)
+                    progressY := y - 10
+                }}
+                <text x={ fmt.Sprintf("%d", labelX) } y={ fmt.Sprintf("%d", progressY) } text-anchor="middle" font-size="11" fill="#333">{ progressText }</text>
+                {{ 
+                    // Draw + and - buttons under each bar (as SVG groups for interactivity)
+                    buttonY := labelY + 25
+                    buttonSpacing := 25
+                    plusX := labelX - buttonSpacing
+                    minusX := labelX + buttonSpacing
+                }}
+                <g id={ fmt.Sprintf("bar-%d-plus", i) } class="target-bar-button" data-bar-index={ fmt.Sprintf("%d", i) } data-action="increment" data-on:click={ fmt.Sprintf("@get('/api/targetbarchart/update?barIndex=%d&action=increment')", i) } style="cursor: pointer;">
+                    <rect x={ fmt.Sprintf("%d", plusX-10) } y={ fmt.Sprintf("%d", buttonY-10) } width="20" height="20" rx="3" fill="#4f46e5" stroke="#4f46e5" stroke-width="1"/>
+                    <text x={ fmt.Sprintf("%d", plusX) } y={ fmt.Sprintf("%d", buttonY) } text-anchor="middle" font-size="14" fill="white" dy="4">+</text>
+                </g>
+                <g id={ fmt.Sprintf("bar-%d-minus", i) } class="target-bar-button" data-bar-index={ fmt.Sprintf("%d", i) } data-action="decrement" data-on:click={ fmt.Sprintf("@get('/api/targetbarchart/update?barIndex=%d&action=decrement')", i) } style="cursor: pointer;">
+                    <rect x={ fmt.Sprintf("%d", minusX-10) } y={ fmt.Sprintf("%d", buttonY-10) } width="20" height="20" rx="3" fill="#ef4444" stroke="#ef4444" stroke-width="1"/>
+                    <text x={ fmt.Sprintf("%d", minusX) } y={ fmt.Sprintf("%d", buttonY) } text-anchor="middle" font-size="14" fill="white" dy="4">-</text>
+                </g>
+            }
+            {{ 
+                // Draw Y axis with section ticks
+                numYTicks := 5
+            }}
+            for i := 0; i <= numYTicks; i++ {
+                {{ 
+                    value := (float64(i) / float64(numYTicks)) * float64(maxTarget)
+                    y := marginTop + chartHeight - int((float64(i)/float64(numYTicks))*float64(data.BarHeight))
+                }}
+                <line x1={ fmt.Sprintf("%d", marginLeft-5) } y1={ fmt.Sprintf("%d", y) } x2={ fmt.Sprintf("%d", marginLeft) } y2={ fmt.Sprintf("%d", y) } stroke="#ccc" stroke-width="1"/>
+                <text x={ fmt.Sprintf("%d", marginLeft-10) } y={ fmt.Sprintf("%d", y+4) } text-anchor="end" font-size="11" fill="#666">{ fmt.Sprintf("%.0f", value) }</text>
+            }
+            {{ 
+                // Draw axes
+            }}
+            <line x1={ fmt.Sprintf("%d", marginLeft) } y1={ fmt.Sprintf("%d", marginTop) } x2={ fmt.Sprintf("%d", marginLeft) } y2={ fmt.Sprintf("%d", marginTop+chartHeight) } stroke="#333" stroke-width="2"/>
+            <line x1={ fmt.Sprintf("%d", marginLeft) } y1={ fmt.Sprintf("%d", marginTop+chartHeight) } x2={ fmt.Sprintf("%d", marginLeft+chartWidth) } y2={ fmt.Sprintf("%d", marginTop+chartHeight) } stroke="#333" stroke-width="2"/>
+            {{ 
+                // Chart title
+            }}
+            <text x={ fmt.Sprintf("%d", svgWidth/2) } y="30" text-anchor="middle" font-size="16" font-weight="bold" fill="#333">{ data.Title }</text>
+            {{ 
+                // X axis label
+            }}
+            <text x={ fmt.Sprintf("%d", svgWidth/2) } y={ fmt.Sprintf("%d", svgHeight-20) } text-anchor="middle" font-size="12" fill="#666">{ data.XAxisLabel }</text>
+            {{ 
+                // Y axis label
+            }}
+            <text x="30" y={ fmt.Sprintf("%d", svgHeight/2) } text-anchor="middle" font-size="12" fill="#666" transform={ fmt.Sprintf("rotate(-90,30,%d)", svgHeight/2) }>{ data.YAxisLabel }</text>
+        }
+    </svg>
+}

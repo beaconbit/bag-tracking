@@ -1,0 +1,254 @@
+package stackedbarchart
+
+import "fmt"
+
+func barSectionClass(isCurrentMinute bool) string {
+    if isCurrentMinute {
+        return "stacked-bar-section current-minute"
+    }
+    return "stacked-bar-section"
+}
+
+templ BarSection(x, y, width, height int, color, machineName string, delay int, isCurrentMinute bool) {
+    <rect 
+        class={ barSectionClass(isCurrentMinute) }
+        x={fmt.Sprintf("%d", x)} 
+        y={fmt.Sprintf("%d", y)} 
+        width={fmt.Sprintf("%d", width)} 
+        height={fmt.Sprintf("%d", height)} 
+        fill={color}
+        stroke="#fff" 
+        stroke-width="1"
+    >
+        <title>{ machineName }: { fmt.Sprintf("%d", delay/60) } minutes</title>
+    </rect>
+}
+
+templ BarLabel(x, y int, text string) {
+    <text 
+        x={fmt.Sprintf("%d", x)} 
+        y={fmt.Sprintf("%d", y)} 
+        text-anchor="middle" 
+        font-size="11" 
+        fill="#666"
+    >
+        { text }
+    </text>
+}
+
+templ BarValue(x, y int, value int) {
+    <text 
+        x={fmt.Sprintf("%d", x)} 
+        y={fmt.Sprintf("%d", y)} 
+        text-anchor="middle" 
+        font-size="10" 
+        fill="#333"
+    >
+        { fmt.Sprintf("%d", value) }
+    </text>
+}
+
+templ TickLine(x1, y1, x2, y2 int) {
+    <line 
+        x1={fmt.Sprintf("%d", x1)} 
+        y1={fmt.Sprintf("%d", y1)} 
+        x2={fmt.Sprintf("%d", x2)} 
+        y2={fmt.Sprintf("%d", y2)} 
+        stroke="#ccc" 
+        stroke-width="1"
+    />
+}
+
+templ TickLabel(x, y int, value float64) {
+    <text 
+        x={fmt.Sprintf("%d", x)} 
+        y={fmt.Sprintf("%d", y)} 
+        text-anchor="end" 
+        font-size="10" 
+        fill="#666"
+    >
+        { fmt.Sprintf("%.0f", value) }
+    </text>
+}
+
+templ AxisLine(x1, y1, x2, y2 int) {
+    <line 
+        x1={fmt.Sprintf("%d", x1)} 
+        y1={fmt.Sprintf("%d", y1)} 
+        x2={fmt.Sprintf("%d", x2)} 
+        y2={fmt.Sprintf("%d", y2)} 
+        stroke="#333" 
+        stroke-width="2"
+    />
+}
+
+templ ChartTitle(x, y int, title string) {
+    <text 
+        x={fmt.Sprintf("%d", x)} 
+        y={fmt.Sprintf("%d", y)} 
+        text-anchor="middle" 
+        font-size="16" 
+        font-weight="bold" 
+        fill="#333"
+    >
+        { title }
+    </text>
+}
+
+templ AxisLabel(x, y int, label string) {
+    <text 
+        x={fmt.Sprintf("%d", x)} 
+        y={fmt.Sprintf("%d", y)} 
+        text-anchor="middle" 
+        font-size="12" 
+        fill="#666"
+    >
+        { label }
+    </text>
+}
+
+templ YAxisLabel(x, y, rotateX, rotateY int, label string) {
+    <text 
+        x={fmt.Sprintf("%d", x)} 
+        y={fmt.Sprintf("%d", y)} 
+        text-anchor="middle" 
+        font-size="12" 
+        fill="#666" 
+        transform={fmt.Sprintf("rotate(-90,%d,%d)", rotateX, rotateY)}
+    >
+        { label }
+    </text>
+}
+
+templ ChartBackground(x, y, width, height int) {
+    <rect 
+        x={fmt.Sprintf("%d", x)} 
+        y={fmt.Sprintf("%d", y)} 
+        width={fmt.Sprintf("%d", width)} 
+        height={fmt.Sprintf("%d", height)} 
+        fill="#f8f9fa" 
+        stroke="#ddd" 
+        stroke-width="1"
+    />
+}
+
+templ PulseAnimationStyle() {
+    <style>
+        @keyframes pulse {
+            0% { opacity: 1; }
+            40% { opacity: 0.2; }
+            80% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+        .current-minute {
+            animation: pulse 4s infinite;
+        }
+    </style>
+}
+
+templ StackedBarChartSVG(data StackedBarChartData) {
+    {{ 
+        // Compute dimensions
+        svgWidth := data.Width
+        svgHeight := data.Height
+        marginTop := 80
+        marginRight := 20
+        marginBottom := 80
+        marginLeft := 100
+        chartWidth := svgWidth - marginLeft - marginRight
+        chartHeight := svgHeight - marginTop - marginBottom
+
+        // Calculate bar spacing
+        numBars := len(data.Hours)
+        barSpacing := 10
+        availableWidth := chartWidth - (barSpacing * (numBars - 1))
+        barWidth := availableWidth / numBars
+        if barWidth > data.BarWidth {
+            barWidth = data.BarWidth
+        }
+
+        // Find max delay for scaling
+        maxDelay := 0
+        for _, hour := range data.Hours {
+            if hour.TotalDelay > maxDelay {
+                maxDelay = hour.TotalDelay
+            }
+        }
+        if maxDelay == 0 {
+            maxDelay = 60 // default
+        }
+    }}
+    <svg width="100%" height="auto" viewBox={fmt.Sprintf("0 0 %d %d", svgWidth, svgHeight)} preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        @ChartBackground(marginLeft, marginTop, chartWidth, chartHeight)
+
+        // Draw each hour bar (stacked sections)
+        for i, hour := range data.Hours {
+            // Calculate bar position
+            {{ x := marginLeft + (i * (barWidth + barSpacing)) }}
+            {{ yBase := marginTop + chartHeight }}
+            {{ accumulatedHeight := 0 }}
+            for machineIdx, delay := range hour.MachineDelays {
+                if delay == 0 {
+                    continue
+                }
+                {{ 
+                    sectionHeight := int(float64(delay) / float64(maxDelay) * float64(chartHeight))
+                    if sectionHeight < 1 {
+                        sectionHeight = 1
+                    }
+                    y := yBase - accumulatedHeight - sectionHeight
+                    color := data.Machines[machineIdx].Color
+                    machineName := data.Machines[machineIdx].Name
+                    isCurrentHour := i == numBars-1
+                }}
+                @BarSection(x, y, barWidth, sectionHeight, color, machineName, delay, isCurrentHour)
+                {{ accumulatedHeight += sectionHeight }}
+            }
+
+            // Draw bar label (hours ago)
+            {{ 
+                labelText := ""
+                if hour.HourOffset == 0 {
+                    labelText = "Now"
+                } else if hour.HourOffset == -1 {
+                    labelText = "1 hr"
+                } else {
+                    labelText = fmt.Sprintf("%d hr", -hour.HourOffset)
+                }
+                labelX := x + barWidth/2
+                labelY := yBase + 20
+            }}
+            @BarLabel(labelX, labelY, labelText)
+
+            // Draw total delay on top of bar if there's space
+            if hour.TotalDelay > 0 && accumulatedHeight > 20 {
+                {{ valueY := yBase - accumulatedHeight - 5 }}
+                @BarValue(labelX, valueY, hour.TotalDelay/60)
+            }
+        }
+
+        // Draw Y axis with delay ticks
+        {{ numYTicks := 6 }}
+        for i := 0; i <= numYTicks; i++ {
+            {{ 
+                value := (float64(i) / float64(numYTicks)) * float64(maxDelay) / 60.0
+                y := marginTop + chartHeight - int((float64(i)/float64(numYTicks))*float64(chartHeight))
+            }}
+            @TickLine(marginLeft-5, y, marginLeft, y)
+            @TickLabel(marginLeft-10, y+3, value)
+        }
+
+        // Draw axes
+        @AxisLine(marginLeft, marginTop, marginLeft, marginTop+chartHeight)
+        @AxisLine(marginLeft, marginTop+chartHeight, marginLeft+chartWidth, marginTop+chartHeight)
+
+        // X axis label
+        @AxisLabel(svgWidth/2, svgHeight-30, data.XAxisLabel)
+
+        // Y axis label
+        @YAxisLabel(40, svgHeight/2, 40, svgHeight/2, data.YAxisLabel)
+
+        // Add CSS for pulse animation
+        @PulseAnimationStyle()
+    </svg>
+}
